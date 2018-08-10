@@ -25,4 +25,11 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="Theme.Bacon.Card">
+        <item name="android:textColor">@color/ltgray</item>
+    </style>
+
+    <style name="Theme.Bacon.Card.Title">
+        <item name="android:textColor">@color/dkgray</item>
+    </style>
 </resources>
