@@ -96,6 +96,12 @@ public class ArticleListActivity extends AppCompatActivity  {
 
     }
 
+    private void onArticleClick(Integer articleId) {
+        Intent intent = new Intent(this, ArticleDetailActivity.class);
+        intent.putExtra(ArticleDetailActivity.ARTICLE_ID, articleId);
+        startActivity(intent);
+    }
+
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
         private List<Article> mArticles;
@@ -116,8 +122,7 @@ public class ArticleListActivity extends AppCompatActivity  {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition()))));
+                    onArticleClick(vh.getArticleId());
                 }
             });
             return vh;
@@ -158,6 +163,7 @@ public class ArticleListActivity extends AppCompatActivity  {
                      article.getThumbUrl(),
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
             holder.thumbnailView.setAspectRatio(article.getAspectRatio());
+            holder.setArticleId(article.getId());
         }
 
         @Override
@@ -171,11 +177,22 @@ public class ArticleListActivity extends AppCompatActivity  {
         public TextView titleView;
         public TextView subtitleView;
 
+        public int getArticleId() {
+            return articleId;
+        }
+
+        public void setArticleId(int articleId) {
+            this.articleId = articleId;
+        }
+
+        public int articleId;
+
         public ViewHolder(View view) {
             super(view);
             thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
         }
+
     }
 }
