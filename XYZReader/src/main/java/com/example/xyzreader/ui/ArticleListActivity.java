@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.Article;
-import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.viewModel.ArticleViewModel;
 
 import java.text.ParseException;

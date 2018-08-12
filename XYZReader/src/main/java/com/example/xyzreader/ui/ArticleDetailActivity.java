@@ -2,13 +2,9 @@ package com.example.xyzreader.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.app.LoaderManager;
-import android.content.Loader;
-import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,9 +18,6 @@ import android.view.ViewGroup;
 import android.view.WindowInsets;
 
 import com.example.xyzreader.R;
-import com.example.xyzreader.data.Article;
-import com.example.xyzreader.data.ArticleLoader;
-import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.viewModel.ArticleViewModel;
 
 import java.util.List;
