@@ -99,7 +99,7 @@ public class ArticleDetailFragment extends Fragment {
                 R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -235,6 +235,7 @@ public class ArticleDetailFragment extends Fragment {
                         }
                     });
         } else {
+            Log.e(TAG, "bindViews: Loading with no content");
             mRootView.setVisibility(View.GONE);
             titleView.setText("N/A");
             bylineView.setText("N/A" );
