@@ -19,6 +19,9 @@ repositories {
         url 'https://maven.google.com/'
         name 'Google'
     }
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 
 android {
@@ -49,6 +52,7 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     implementation 'com.google.code.gson:gson:2.8.4'
+    implementation 'com.github.ybq:Android-SpinKit:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.1.2'
     implementation files('libs/volley.jar')
 }

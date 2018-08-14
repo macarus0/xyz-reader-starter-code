@@ -3,16 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Theme.Bacon.Card"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
     android:clickable="true"
     android:focusable="true"
+    style="@style/Theme.Bacon.CardView"
     android:foreground="?selectableItemBackground">
 
     <LinearLayout
+        android:theme="@style/Theme.Bacon.Card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -22,6 +19,8 @@
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:layout_margin="0dp"
+            android:padding="0dp"
             android:scaleType="centerCrop"
             android:background="@color/photo_placeholder" />
 
@@ -30,21 +29,15 @@
             style="@style/Theme.Bacon.Card.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingTop="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="4dp"
             android:ellipsize="end"
             tools:text="Blood Meridian"
             android:maxLines="4" />
 
         <TextView
+            style="@style/Theme.Bacon.Card.Text"
             android:id="@+id/article_subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="16dp"
             android:maxLines="2"
             tools:text="Jan 1, 1987\nby Cormac McCarthy"
             android:ellipsize="end" />

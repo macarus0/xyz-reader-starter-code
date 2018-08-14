@@ -18,11 +18,12 @@
 <resources>
 
     <style name="Theme.Bacon" parent="@style/Theme.AppCompat.Light.NoActionBar">
-
+        <item name="android:textColor">@color/dkgray</item>
     </style>
 
-    <style name="Theme.Bacon.Detail">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+
+    <style name="Theme.Bacon.CardView">
+        <item name="android:layout_margin">4dp</item>
     </style>
 
     <style name="Theme.Bacon.Card">
@@ -31,5 +32,15 @@
 
     <style name="Theme.Bacon.Card.Title">
         <item name="android:textColor">@color/dkgray</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="Theme.Bacon.Card.Text">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
     </style>
 </resources>

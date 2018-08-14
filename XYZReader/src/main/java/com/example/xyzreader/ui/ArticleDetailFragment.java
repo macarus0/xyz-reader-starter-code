@@ -20,6 +20,8 @@ import java.util.GregorianCalendar;
 
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.graphics.Palette;
 import android.text.Html;
@@ -47,16 +49,13 @@ public class ArticleDetailFragment extends Fragment {
     private static final String TAG = "ArticleDetailFragment";
 
     public static final String ARG_ITEM_ID = "item_id";
-    private static final float PARALLAX_FACTOR = 1.25f;
 
     private Integer mItemId;
     private View mRootView;
-    private int mMutedColor = 0xFF333333;
+    private int mMutedColor;
     private NestedScrollView mScrollView;
     private CoordinatorLayout mCoordinatorLayout;
-    private ColorDrawable mStatusBarColorDrawable;
-
-    private int mTopInset;
+    ;
     private View mPhotoContainerView;
     private ImageView mPhotoView;
     private int mScrollY;
@@ -110,9 +109,7 @@ public class ArticleDetailFragment extends Fragment {
         mScrollView = mRootView.findViewById(R.id.scrollview);
 
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
-
-        mStatusBarColorDrawable = new ColorDrawable(0);
-
+        mMutedColor = getResources().getColor(R.color.dkgray);
         mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,22 +126,15 @@ public class ArticleDetailFragment extends Fragment {
                 onLoadFinished(article);
             }
         });
-        updateStatusBar();
         return mRootView;
     }
 
-    private void updateStatusBar() {
-        int color = 0;
-        if (mPhotoView != null && mTopInset != 0 && mScrollY > 0) {
-            float f = progress(mScrollY,
-                    mStatusBarFullOpacityBottom - mTopInset * 3,
-                    mStatusBarFullOpacityBottom - mTopInset);
-            color = Color.argb((int) (255 * f),
-                    (int) (Color.red(mMutedColor) * 0.9),
-                    (int) (Color.green(mMutedColor) * 0.9),
-                    (int) (Color.blue(mMutedColor) * 0.9));
-        }
-        mStatusBarColorDrawable.setColor(color);
+    private void updateStatusBar(int sourceColor) {
+        int color = Color.argb(255,
+                    (int) (Color.red(sourceColor) * 0.9),
+                    (int) (Color.green(sourceColor) * 0.9),
+                    (int) (Color.blue(sourceColor) * 0.9));
+        getActivity().getWindow().setStatusBarColor(color);
     }
 
     static float progress(float v, float min, float max) {
@@ -181,9 +171,6 @@ public class ArticleDetailFragment extends Fragment {
         bylineView.setMovementMethod(new LinkMovementMethod());
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
 
-
-        bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
-
         if (article != null) {
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
@@ -208,7 +195,7 @@ public class ArticleDetailFragment extends Fragment {
                                 + "</font>"));
 
             }
-            bodyView.setText(Html.fromHtml(article.getBody().replaceAll("(\r\n|\n)", "<br />")));
+            bodyView.setText(Html.fromHtml(article.getBody().replaceAll("(\r\n\r\n|\n\n)", "<br />")));
             ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                     .get(article.getPhotoUrl(), new ImageLoader.ImageListener() {
                         @Override
@@ -219,10 +206,10 @@ public class ArticleDetailFragment extends Fragment {
                                 Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                                     @Override
                                     public void onGenerated(@NonNull Palette palette) {
-                                        mMutedColor = palette.getDarkMutedColor(0xFF333333);
+                                        mMutedColor = palette.getDarkMutedColor(mMutedColor);
                                         mRootView.findViewById(R.id.meta_bar)
                                                 .setBackgroundColor(mMutedColor);
-                                        updateStatusBar();
+                                        updateStatusBar(mMutedColor);
                                     }
                                 });
 
