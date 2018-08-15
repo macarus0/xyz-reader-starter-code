@@ -2,6 +2,7 @@ package com.example.xyzreader.ui;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -97,6 +98,7 @@ public class ArticleDetailFragment extends Fragment {
         mStatusBarFullOpacityBottom = getResources().getDimensionPixelSize(
                 R.dimen.detail_card_top_margin);
         setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -130,11 +132,14 @@ public class ArticleDetailFragment extends Fragment {
     }
 
     private void updateStatusBar(int sourceColor) {
-        int color = Color.argb(255,
-                    (int) (Color.red(sourceColor) * 0.9),
-                    (int) (Color.green(sourceColor) * 0.9),
-                    (int) (Color.blue(sourceColor) * 0.9));
-        getActivity().getWindow().setStatusBarColor(color);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            int color = Color.argb(255,
+                    Color.red(sourceColor),
+                    Color.green(sourceColor),
+                    Color.blue(sourceColor));
+            getActivity().getWindow().setStatusBarColor(color);
+        }
     }
 
     static float progress(float v, float min, float max) {
