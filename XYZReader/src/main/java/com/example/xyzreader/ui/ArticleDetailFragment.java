@@ -56,7 +56,6 @@ public class ArticleDetailFragment extends Fragment {
     private int mMutedColor;
     private NestedScrollView mScrollView;
     private CoordinatorLayout mCoordinatorLayout;
-    ;
     private View mPhotoContainerView;
     private ImageView mPhotoView;
     private int mScrollY;
