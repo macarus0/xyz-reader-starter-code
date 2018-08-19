@@ -29,48 +29,62 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/detail_photo_height"
                     android:scaleType="centerCrop" />
-
             </FrameLayout>
 
-            <FrameLayout
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/meta_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:orientation="vertical"
+                android:paddingBottom="@dimen/detail_metabar_vert_padding"
+                android:paddingLeft="@dimen/detail_inner_horiz_margin"
+                android:paddingRight="@dimen/detail_inner_horiz_margin"
+                android:paddingTop="@dimen/detail_metabar_vert_padding"
+                android:background="@android:color/transparent"
+                android:layout_gravity="bottom"
                 app:layout_collapseMode="pin">
 
-                <LinearLayout
-                    android:id="@+id/meta_bar"
-                    android:layout_width="match_parent"
+
+                <TextView
+                    android:id="@+id/article_title"
+                    style="?android:attr/textAppearanceLarge"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/detail_metabar_vert_padding"
-                    android:paddingLeft="@dimen/detail_inner_horiz_margin"
-                    android:paddingRight="@dimen/detail_inner_horiz_margin"
-                    android:paddingTop="@dimen/detail_metabar_vert_padding">
+                    android:lineSpacingMultiplier="0.9"
+                    android:paddingBottom="@dimen/detail_metabar_title_bottom_padding"
+                    android:paddingTop="@dimen/detail_metabar_title_bottom_padding"
+                    android:textSize="@dimen/detail_title_text_size"
+                    android:textStyle="bold"
+                    android:gravity="bottom"
+                    app:layout_constraintBottom_toTopOf="@id/article_byline_date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="The Grapes of Wrath" />
 
-                    <TextView
-                        android:id="@+id/article_title"
-                        style="?android:attr/textAppearanceLarge"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingMultiplier="0.9"
-                        android:paddingBottom="@dimen/detail_metabar_title_bottom_padding"
-                        android:paddingTop="@dimen/detail_metabar_title_bottom_padding"
-                        android:textSize="@dimen/detail_title_text_size"
-                        android:textStyle="bold"
+                <TextView
+                    android:id="@+id/article_byline_date"
+                    style="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/article_byline_author"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/article_title"
+                    tools:text="13 May 1955" />
 
-                        tools:text="The Grapes of Wrath" />
+                <TextView
+                    android:id="@+id/article_byline_author"
+                    style="?android:attr/textAppearanceSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="@id/article_byline_date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/article_byline_date"
+                    app:layout_constraintTop_toTopOf="@id/article_byline_date"
+                    tools:text="John Steinbeck " />
 
-                    <TextView
-                        android:id="@+id/article_byline"
-                        style="?android:attr/textAppearanceSmall"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:text="John Steinbeck 13 May 1955" />
-                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
 
-            </FrameLayout>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 

@@ -19,8 +19,8 @@ public class ArticleJson {
     static public Article[] fetchArticles() {
         String recipeJsonString;
         try {
-            String BAKING_URL = "https://go.udacity.com/xyz-reader-json";
-            recipeJsonString = fetchArticleJson(BAKING_URL);
+            String ARTICLES_URL = "https://raw.githubusercontent.com/SuperAwesomeness/XYZReader/master/data.json";
+            recipeJsonString = fetchArticleJson(ARTICLES_URL);
         } catch (IOException e) {
             Log.e("fetchArticles", "Error fetching URL "+ e.getMessage());
             return null;

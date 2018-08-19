@@ -69,6 +69,9 @@ public class ArticleDetailFragment extends Fragment {
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
     // Most time functions can only handle 1902 - 2037
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2,1,1);
+    private TextView mTitleView;
+    private TextView mBylineDateTextView;
+    private TextView mBylineAuthorTextView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -110,6 +113,11 @@ public class ArticleDetailFragment extends Fragment {
 
         mScrollView = mRootView.findViewById(R.id.scrollview);
 
+
+        mTitleView = mRootView.findViewById(R.id.article_title);
+        mBylineDateTextView =  mRootView.findViewById(R.id.article_byline_date);
+        mBylineAuthorTextView = mRootView.findViewById(R.id.article_byline_author);
+
         mPhotoView = (ImageView) mRootView.findViewById(R.id.photo);
         mRootView.findViewById(R.id.share_fab).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +140,6 @@ public class ArticleDetailFragment extends Fragment {
 
     private void updateStatusBar(int sourceColor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
             int color = Color.argb(255,
                     Color.red(sourceColor),
                     Color.green(sourceColor),
@@ -165,71 +172,46 @@ public class ArticleDetailFragment extends Fragment {
         }
     }
 
+    private void setTitleTextColors(Palette.Swatch swatch) {
+        mBylineAuthorTextView.setTextColor(swatch.getBodyTextColor());
+        mBylineDateTextView.setTextColor(swatch.getTitleTextColor());
+        mTitleView.setTextColor(swatch.getTitleTextColor());
+    }
+
     private void bindViews(Article article) {
         if (mRootView == null) {
             return;
         }
 
-        TextView titleView = (TextView) mRootView.findViewById(R.id.article_title);
-        TextView bylineView = (TextView) mRootView.findViewById(R.id.article_byline);
-        bylineView.setMovementMethod(new LinkMovementMethod());
         TextView bodyView = (TextView) mRootView.findViewById(R.id.article_body);
 
         if (article != null) {
             mRootView.setAlpha(0);
             mRootView.setVisibility(View.VISIBLE);
             mRootView.animate().alpha(1);
-            titleView.setText(article.getTitle());
+            loadPhoto(article.getPhotoUrl());
+            mTitleView.setText(article.getTitle());
             Date publishedDate = parsePublishedDate(article.getPublishedDate());
+            String dateString;
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
-                bylineView.setText(Html.fromHtml(
-                        DateUtils.getRelativeTimeSpanString(
-                                publishedDate.getTime(),
-                                System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                                DateUtils.FORMAT_ABBREV_ALL).toString()
-                                + " by <font color='#ffffff'>"
-                                + article.getAuthor()
-                                + "</font>"));
+                dateString = DateUtils.getRelativeTimeSpanString(
+                        publishedDate.getTime(),
+                        System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                        DateUtils.FORMAT_ABBREV_ALL).toString();
 
             } else {
                 // If date is before 1902, just show the string
-                bylineView.setText(Html.fromHtml(
-                        outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
-                        + article.getAuthor()
-                                + "</font>"));
+                dateString = outputFormat.format(publishedDate);
 
             }
+            mBylineDateTextView.setText(String.format(getString(R.string.byline_date), dateString));
+            mBylineAuthorTextView.setText(article.getAuthor());
             bodyView.setText(Html.fromHtml(article.getBody().replaceAll("(\r\n\r\n|\n\n)", "<br />")));
-            ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
-                    .get(article.getPhotoUrl(), new ImageLoader.ImageListener() {
-                        @Override
-                        public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
-                            Bitmap bitmap = imageContainer.getBitmap();
-                            if (bitmap != null) {
-                                mPhotoView.setImageBitmap(imageContainer.getBitmap());
-                                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-                                    @Override
-                                    public void onGenerated(@NonNull Palette palette) {
-                                        mMutedColor = palette.getDarkMutedColor(mMutedColor);
-                                        mRootView.findViewById(R.id.meta_bar)
-                                                .setBackgroundColor(mMutedColor);
-                                        updateStatusBar(mMutedColor);
-                                    }
-                                });
 
-                            }
-                        }
-
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-
-                        }
-                    });
         } else {
             Log.e(TAG, "bindViews: Loading with no content");
             mRootView.setVisibility(View.GONE);
-            titleView.setText("N/A");
-            bylineView.setText("N/A" );
+            mTitleView.setText("N/A");
             bodyView.setText("N/A");
         }
     }
@@ -239,6 +221,35 @@ public class ArticleDetailFragment extends Fragment {
             return;
         }
         bindViews(article);
+    }
+
+    private void loadPhoto(String photoUrl) {
+        ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
+                .get(photoUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
+                        Bitmap bitmap = imageContainer.getBitmap();
+                        if (bitmap != null) {
+                            mPhotoView.setImageBitmap(imageContainer.getBitmap());
+                            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                                @Override
+                                public void onGenerated(@NonNull Palette palette) {
+                                    mMutedColor = palette.getDarkMutedColor(mMutedColor);
+                                    mRootView.findViewById(R.id.meta_bar)
+                                            .setBackgroundColor(mMutedColor);
+                                    setTitleTextColors(palette.getDarkMutedSwatch());
+                                    updateStatusBar(mMutedColor);
+                                }
+                            });
+
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+
+                    }
+                });
     }
 
 }
