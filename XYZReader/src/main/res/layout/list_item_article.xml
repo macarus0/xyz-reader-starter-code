@@ -6,6 +6,7 @@
     android:clickable="true"
     android:focusable="true"
     style="@style/Theme.Bacon.CardView"
+    android:elevation="@dimen/cardview_default_elevation"
     android:foreground="?selectableItemBackground">
 
     <LinearLayout
